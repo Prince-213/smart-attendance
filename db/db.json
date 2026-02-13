@@ -1,0 +1,1149 @@
+{
+  "students": [
+    {
+      "id": "1",
+      "name": "John Doe",
+      "email": "john@gmail.com",
+      "matriculationNumber": "2022/123456",
+      "department": "Computer Science",
+      "level": "300L",
+      "faculty": "Faculty of Computing and Informatics",
+      "gender": "Male",
+      "dateOfBirth": "2003-01-01",
+      "phoneNumber": "08012345678",
+      "address": "123 University Road, Lagos",
+      "profilePicture": "https://example.com/john.jpg",
+      "faceData": "base64_encoded_face_data",
+      "attendanceScore": 5
+    },
+    {
+      "id": "2",
+      "name": "Jane Smith",
+      "email": "jane.smith@gmail.com",
+      "matriculationNumber": "2022/123457",
+      "department": "Electrical Engineering",
+      "level": "400L",
+      "faculty": "Faculty of Engineering",
+      "gender": "Female",
+      "dateOfBirth": "2002-05-15",
+      "phoneNumber": "08012345679",
+      "address": "456 Tech Lane, Abuja",
+      "profilePicture": "https://example.com/jane.jpg",
+      "faceData": "base64_encoded_face_data",
+      "attendanceScore": 10
+    },
+    {
+      "id": "3",
+      "name": "Michael Brown",
+      "email": "m.brown@yahoo.com",
+      "matriculationNumber": "2023/100201",
+      "department": "Mechanical Engineering",
+      "level": "200L",
+      "faculty": "Faculty of Engineering",
+      "gender": "Male",
+      "dateOfBirth": "2004-11-20",
+      "phoneNumber": "09023456789",
+      "address": "789 Mechanic Way, Port Harcourt",
+      "profilePicture": "https://example.com/michael.jpg",
+      "faceData": "base64_encoded_face_data",
+      "attendanceScore": 8
+    },
+    {
+      "id": "4",
+      "name": "Sarah Johnson",
+      "email": "sarah.j@outlook.com",
+      "matriculationNumber": "2021/050403",
+      "department": "Medicine and Surgery",
+      "level": "500L",
+      "faculty": "Faculty of Clinical Sciences",
+      "gender": "Female",
+      "dateOfBirth": "2001-03-10",
+      "phoneNumber": "08123450001",
+      "address": "12 Medical Ave, Ibadan",
+      "profilePicture": "https://example.com/sarah.jpg",
+      "faceData": "base64_encoded_face_data",
+      "attendanceScore": 7
+    },
+    {
+      "id": "5",
+      "name": "David Wilson",
+      "email": "d.wilson@gmail.com",
+      "matriculationNumber": "2022/090807",
+      "department": "Civil Engineering",
+      "level": "300L",
+      "faculty": "Faculty of Engineering",
+      "gender": "Male",
+      "dateOfBirth": "2003-08-25",
+      "phoneNumber": "07065432109",
+      "address": "34 Bridge Street, Enugu",
+      "profilePicture": "https://example.com/david.jpg",
+      "faceData": "base64_encoded_face_data",
+      "attendanceScore": 3
+    },
+    {
+      "id": "6",
+      "name": "Emily Davis",
+      "email": "emily.d@hotmail.com",
+      "matriculationNumber": "2024/010203",
+      "department": "Law",
+      "level": "100L",
+      "faculty": "Faculty of Law",
+      "gender": "Female",
+      "dateOfBirth": "2005-12-05",
+      "phoneNumber": "08098765432",
+      "address": "56 Justice Plaza, Abuja",
+      "profilePicture": "https://example.com/emily.jpg",
+      "faceData": "base64_encoded_face_data",
+      "attendanceScore": 2
+    },
+    {
+      "id": "7",
+      "name": "Chris Taylor",
+      "email": "c.taylor@gmail.com",
+      "matriculationNumber": "2022/112233",
+      "department": "Software Engineering",
+      "level": "300L",
+      "faculty": "Faculty of Computing and Informatics",
+      "gender": "Male",
+      "dateOfBirth": "2003-06-18",
+      "phoneNumber": "08100112233",
+      "address": "89 Coder Blvd, Lagos",
+      "profilePicture": "https://example.com/chris.jpg",
+      "faceData": "base64_encoded_face_data",
+      "attendanceScore": 9
+    },
+    {
+      "id": "8",
+      "name": "Jessica Miller",
+      "email": "j.miller@gmail.com",
+      "matriculationNumber": "2023/445566",
+      "department": "Accounting",
+      "level": "200L",
+      "faculty": "Faculty of Administration",
+      "gender": "Female",
+      "dateOfBirth": "2004-09-30",
+      "phoneNumber": "07011223344",
+      "address": "22 Ledger Road, Lagos",
+      "profilePicture": "https://example.com/jessica.jpg",
+      "faceData": "base64_encoded_face_data",
+      "attendanceScore": 9
+    },
+    {
+      "id": "9",
+      "name": "Daniel Anderson",
+      "email": "d.anderson@yahoo.com",
+      "matriculationNumber": "2021/778899",
+      "department": "Political Science",
+      "level": "400L",
+      "faculty": "Faculty of Social Sciences",
+      "gender": "Male",
+      "dateOfBirth": "2002-02-14",
+      "phoneNumber": "09055667788",
+      "address": "123 Federal Way, Abuja",
+      "profilePicture": "https://example.com/daniel.jpg",
+      "faceData": "base64_encoded_face_data",
+      "attendanceScore": 10
+    },
+    {
+      "id": "10",
+      "name": "Amanda Thomas",
+      "email": "a.thomas@gmail.com",
+      "matriculationNumber": "2022/334455",
+      "department": "Business Administration",
+      "level": "300L",
+      "faculty": "Faculty of Administration",
+      "gender": "Female",
+      "dateOfBirth": "2003-04-22",
+      "phoneNumber": "08066778899",
+      "address": "44 Market Dr, Kano",
+      "profilePicture": "https://example.com/amanda.jpg",
+      "faceData": "base64_encoded_face_data",
+      "attendanceScore": 8
+    },
+    {
+      "id": "11",
+      "name": "Brian Moore",
+      "email": "b.moore@gmail.com",
+      "matriculationNumber": "2024/223344",
+      "department": "Cybersecurity",
+      "level": "100L",
+      "faculty": "Faculty of Computing and Informatics",
+      "gender": "Male",
+      "dateOfBirth": "2005-10-12",
+      "phoneNumber": "07088990011",
+      "address": "77 Security Way, Jos",
+      "profilePicture": "https://example.com/brian.jpg",
+      "faceData": "base64_encoded_face_data",
+      "attendanceScore": 1
+    }
+  ],
+  "sessions": [
+    {
+      "id": "sess_001",
+      "courseCode": "CSC301",
+      "courseName": "Database Management Systems",
+      "date": "2025-02-10",
+      "timeStart": "09:00",
+      "timeEnd": "11:00",
+      "duration": 2,
+      "totalStudents": 11,
+      "presentStudents": 9,
+      "lateStudents": 2,
+      "sessionCode": "CSC301-1002",
+      "status": "ended",
+      "students": [
+        {
+          "id": "1",
+          "name": "John Doe",
+          "matricNumber": "2022/123456",
+          "timeJoined": "08:55",
+          "status": "present"
+        },
+        {
+          "id": "2",
+          "name": "Jane Smith",
+          "matricNumber": "2022/123457",
+          "timeJoined": "09:15",
+          "status": "present"
+        },
+        {
+          "id": "3",
+          "name": "Michael Brown",
+          "matricNumber": "2023/100201",
+          "timeJoined": "09:30",
+          "status": "present"
+        },
+        {
+          "id": "4",
+          "name": "Sarah Johnson",
+          "matricNumber": "2021/050403",
+          "timeJoined": "08:58",
+          "status": "present"
+        },
+        {
+          "id": "5",
+          "name": "David Wilson",
+          "matricNumber": "2022/090807",
+          "timeJoined": "08:52",
+          "status": "present"
+        },
+        {
+          "id": "6",
+          "name": "Emily Davis",
+          "matricNumber": "2024/010203",
+          "timeJoined": "08:59",
+          "status": "present"
+        },
+        {
+          "id": "7",
+          "name": "Chris Taylor",
+          "matricNumber": "2022/112233",
+          "timeJoined": "08:57",
+          "status": "present"
+        },
+        {
+          "id": "8",
+          "name": "Jessica Miller",
+          "matricNumber": "2023/445566",
+          "timeJoined": "08:56",
+          "status": "present"
+        },
+        {
+          "id": "9",
+          "name": "Daniel Anderson",
+          "matricNumber": "2021/778899",
+          "timeJoined": "09:02",
+          "status": "present"
+        },
+        {
+          "id": "10",
+          "name": "Amanda Thomas",
+          "matricNumber": "2022/334455",
+          "timeJoined": "08:54",
+          "status": "present"
+        }
+      ]
+    },
+    {
+      "id": "sess_002",
+      "courseCode": "CSC305",
+      "courseName": "Software Engineering",
+      "date": "2025-02-11",
+      "timeStart": "10:00",
+      "timeEnd": "12:00",
+      "duration": 2,
+      "totalStudents": 11,
+      "presentStudents": 7,
+      "lateStudents": 3,
+      "absentStudents": 1,
+      "sessionCode": "CSC305-1102",
+      "status": "ended",
+      "students": [
+        {
+          "id": "1",
+          "name": "John Doe",
+          "matricNumber": "2022/123456",
+          "timeJoined": "09:58",
+          "status": "present"
+        },
+        {
+          "id": "2",
+          "name": "Jane Smith",
+          "matricNumber": "2022/123457",
+          "timeJoined": "10:15",
+          "status": "present"
+        },
+        {
+          "id": "3",
+          "name": "Michael Brown",
+          "matricNumber": "2023/100201",
+          "timeJoined": "10:20",
+          "status": "present"
+        },
+        {
+          "id": "4",
+          "name": "Sarah Johnson",
+          "matricNumber": "2021/050403",
+          "timeJoined": "09:59",
+          "status": "present"
+        },
+        {
+          "id": "5",
+          "name": "David Wilson",
+          "matricNumber": "2022/090807",
+          "timeJoined": "09:55",
+          "status": "present"
+        },
+        {
+          "id": "6",
+          "name": "Emily Davis",
+          "matricNumber": "2024/010203",
+          "timeJoined": "10:00",
+          "status": "present"
+        },
+        {
+          "id": "7",
+          "name": "Chris Taylor",
+          "matricNumber": "2022/112233",
+          "timeJoined": null,
+          "status": "absent"
+        },
+        {
+          "id": "8",
+          "name": "Jessica Miller",
+          "matricNumber": "2023/445566",
+          "timeJoined": "10:10",
+          "status": "present"
+        },
+        {
+          "id": "9",
+          "name": "Daniel Anderson",
+          "matricNumber": "2021/778899",
+          "timeJoined": "10:05",
+          "status": "present"
+        }
+      ]
+    },
+    {
+      "id": "sess_003",
+      "courseCode": "CSC302",
+      "courseName": "Computer Networks",
+      "date": "2025-02-12",
+      "timeStart": "13:00",
+      "timeEnd": "15:00",
+      "duration": 2,
+      "totalStudents": 11,
+      "presentStudents": 10,
+      "lateStudents": 0,
+      "sessionCode": "CSC302-1202",
+      "status": "ended",
+      "students": [
+        {
+          "id": "1",
+          "name": "John Doe",
+          "matricNumber": "2022/123456",
+          "timeJoined": "12:58",
+          "status": "present"
+        },
+        {
+          "id": "2",
+          "name": "Jane Smith",
+          "matricNumber": "2022/123457",
+          "timeJoined": "12:59",
+          "status": "present"
+        },
+        {
+          "id": "3",
+          "name": "Michael Brown",
+          "matricNumber": "2023/100201",
+          "timeJoined": "12:57",
+          "status": "present"
+        },
+        {
+          "id": "4",
+          "name": "Sarah Johnson",
+          "matricNumber": "2021/050403",
+          "timeJoined": "12:55",
+          "status": "present"
+        },
+        {
+          "id": "5",
+          "name": "David Wilson",
+          "matricNumber": "2022/090807",
+          "timeJoined": "12:56",
+          "status": "present"
+        },
+        {
+          "id": "6",
+          "name": "Emily Davis",
+          "matricNumber": "2024/010203",
+          "timeJoined": "13:00",
+          "status": "present"
+        },
+        {
+          "id": "7",
+          "name": "Chris Taylor",
+          "matricNumber": "2022/112233",
+          "timeJoined": "12:54",
+          "status": "present"
+        },
+        {
+          "id": "8",
+          "name": "Jessica Miller",
+          "matricNumber": "2023/445566",
+          "timeJoined": "12:53",
+          "status": "present"
+        },
+        {
+          "id": "9",
+          "name": "Daniel Anderson",
+          "matricNumber": "2021/778899",
+          "timeJoined": "12:52",
+          "status": "present"
+        },
+        {
+          "id": "10",
+          "name": "Amanda Thomas",
+          "matricNumber": "2022/334455",
+          "timeJoined": "12:51",
+          "status": "present"
+        }
+      ]
+    },
+    {
+      "id": "sess_004",
+      "courseCode": "CSC303",
+      "courseName": "Operating Systems",
+      "date": "2025-02-13",
+      "timeStart": "08:00",
+      "timeEnd": "10:00",
+      "duration": 2,
+      "totalStudents": 11,
+      "presentStudents": 5,
+      "lateStudents": 4,
+      "absentStudents": 2,
+      "sessionCode": "CSC303-1302",
+      "status": "ended",
+      "students": [
+        {
+          "id": "1",
+          "name": "John Doe",
+          "matricNumber": "2022/123456",
+          "timeJoined": "08:30",
+          "status": "present"
+        },
+        {
+          "id": "2",
+          "name": "Jane Smith",
+          "matricNumber": "2022/123457",
+          "timeJoined": "08:45",
+          "status": "present"
+        },
+        {
+          "id": "3",
+          "name": "Michael Brown",
+          "matricNumber": "2023/100201",
+          "timeJoined": null,
+          "status": "absent"
+        },
+        {
+          "id": "4",
+          "name": "Sarah Johnson",
+          "matricNumber": "2021/050403",
+          "timeJoined": "07:58",
+          "status": "present"
+        },
+        {
+          "id": "5",
+          "name": "David Wilson",
+          "matricNumber": "2022/090807",
+          "timeJoined": "07:55",
+          "status": "present"
+        },
+        {
+          "id": "6",
+          "name": "Emily Davis",
+          "matricNumber": "2024/010203",
+          "timeJoined": "08:50",
+          "status": "present"
+        },
+        {
+          "id": "7",
+          "name": "Chris Taylor",
+          "matricNumber": "2022/112233",
+          "timeJoined": "07:59",
+          "status": "present"
+        },
+        {
+          "id": "8",
+          "name": "Jessica Miller",
+          "matricNumber": "2023/445566",
+          "timeJoined": null,
+          "status": "absent"
+        },
+        {
+          "id": "9",
+          "name": "Daniel Anderson",
+          "matricNumber": "2021/778899",
+          "timeJoined": "08:40",
+          "status": "present"
+        },
+        {
+          "id": "10",
+          "name": "Amanda Thomas",
+          "matricNumber": "2022/334455",
+          "timeJoined": "07:57",
+          "status": "present"
+        }
+      ]
+    },
+    {
+      "id": "sess_005",
+      "courseCode": "CSC304",
+      "courseName": "Web Development",
+      "date": "2025-02-14",
+      "timeStart": "14:00",
+      "timeEnd": "16:00",
+      "duration": 2,
+      "totalStudents": 11,
+      "presentStudents": 8,
+      "lateStudents": 2,
+      "absentStudents": 1,
+      "sessionCode": "CSC304-1402",
+      "status": "ended",
+      "students": [
+        {
+          "id": "1",
+          "name": "John Doe",
+          "matricNumber": "2022/123456",
+          "timeJoined": "13:55",
+          "status": "present"
+        },
+        {
+          "id": "2",
+          "name": "Jane Smith",
+          "matricNumber": "2022/123457",
+          "timeJoined": "13:58",
+          "status": "present"
+        },
+        {
+          "id": "3",
+          "name": "Michael Brown",
+          "matricNumber": "2023/100201",
+          "timeJoined": "14:05",
+          "status": "present"
+        },
+        {
+          "id": "4",
+          "name": "Sarah Johnson",
+          "matricNumber": "2021/050403",
+          "timeJoined": "13:59",
+          "status": "present"
+        },
+        {
+          "id": "5",
+          "name": "David Wilson",
+          "matricNumber": "2022/090807",
+          "timeJoined": "13:57",
+          "status": "present"
+        },
+        {
+          "id": "6",
+          "name": "Emily Davis",
+          "matricNumber": "2024/010203",
+          "timeJoined": "14:10",
+          "status": "present"
+        },
+        {
+          "id": "7",
+          "name": "Chris Taylor",
+          "matricNumber": "2022/112233",
+          "timeJoined": "13:56",
+          "status": "present"
+        },
+        {
+          "id": "8",
+          "name": "Jessica Miller",
+          "matricNumber": "2023/445566",
+          "timeJoined": "13:54",
+          "status": "present"
+        },
+        {
+          "id": "9",
+          "name": "Daniel Anderson",
+          "matricNumber": "2021/778899",
+          "timeJoined": "13:53",
+          "status": "present"
+        },
+        {
+          "id": "11",
+          "name": "Brian Moore",
+          "matricNumber": "2024/223344",
+          "timeJoined": null,
+          "status": "absent"
+        }
+      ]
+    },
+    {
+      "id": "sess_006",
+      "courseCode": "CSC306",
+      "courseName": "Artificial Intelligence",
+      "date": "2025-02-17",
+      "timeStart": "11:00",
+      "timeEnd": "13:00",
+      "duration": 2,
+      "totalStudents": 11,
+      "presentStudents": 9,
+      "lateStudents": 1,
+      "absentStudents": 1,
+      "sessionCode": "CSC306-1702",
+      "status": "ended",
+      "students": [
+        {
+          "id": "1",
+          "name": "John Doe",
+          "matricNumber": "2022/123456",
+          "timeJoined": "10:58",
+          "status": "present"
+        },
+        {
+          "id": "2",
+          "name": "Jane Smith",
+          "matricNumber": "2022/123457",
+          "timeJoined": "10:59",
+          "status": "present"
+        },
+        {
+          "id": "3",
+          "name": "Michael Brown",
+          "matricNumber": "2023/100201",
+          "timeJoined": "10:57",
+          "status": "present"
+        },
+        {
+          "id": "4",
+          "name": "Sarah Johnson",
+          "matricNumber": "2021/050403",
+          "timeJoined": "11:30",
+          "status": "present"
+        },
+        {
+          "id": "5",
+          "name": "David Wilson",
+          "matricNumber": "2022/090807",
+          "timeJoined": "10:56",
+          "status": "present"
+        },
+        {
+          "id": "6",
+          "name": "Emily Davis",
+          "matricNumber": "2024/010203",
+          "timeJoined": null,
+          "status": "absent"
+        },
+        {
+          "id": "7",
+          "name": "Chris Taylor",
+          "matricNumber": "2022/112233",
+          "timeJoined": "10:55",
+          "status": "present"
+        },
+        {
+          "id": "8",
+          "name": "Jessica Miller",
+          "matricNumber": "2023/445566",
+          "timeJoined": "10:54",
+          "status": "present"
+        },
+        {
+          "id": "9",
+          "name": "Daniel Anderson",
+          "matricNumber": "2021/778899",
+          "timeJoined": "10:53",
+          "status": "present"
+        },
+        {
+          "id": "10",
+          "name": "Amanda Thomas",
+          "matricNumber": "2022/334455",
+          "timeJoined": "10:52",
+          "status": "present"
+        },
+        {
+          "id": "11",
+          "name": "Brian Moore",
+          "matricNumber": "2024/223344",
+          "timeJoined": "10:51",
+          "status": "present"
+        }
+      ]
+    },
+    {
+      "id": "sess_007",
+      "courseCode": "CSC307",
+      "courseName": "Mobile App Development",
+      "date": "2025-02-18",
+      "timeStart": "15:00",
+      "timeEnd": "17:00",
+      "duration": 2,
+      "totalStudents": 11,
+      "presentStudents": 6,
+      "lateStudents": 3,
+      "absentStudents": 2,
+      "sessionCode": "CSC307-1802",
+      "status": "ended",
+      "students": [
+        {
+          "id": "1",
+          "name": "John Doe",
+          "matricNumber": "2022/123456",
+          "timeJoined": "15:30",
+          "status": "present"
+        },
+        {
+          "id": "2",
+          "name": "Jane Smith",
+          "matricNumber": "2022/123457",
+          "timeJoined": "14:55",
+          "status": "present"
+        },
+        {
+          "id": "3",
+          "name": "Michael Brown",
+          "matricNumber": "2023/100201",
+          "timeJoined": null,
+          "status": "absent"
+        },
+        {
+          "id": "4",
+          "name": "Sarah Johnson",
+          "matricNumber": "2021/050403",
+          "timeJoined": "14:58",
+          "status": "present"
+        },
+        {
+          "id": "5",
+          "name": "David Wilson",
+          "matricNumber": "2022/090807",
+          "timeJoined": null,
+          "status": "absent"
+        },
+        {
+          "id": "6",
+          "name": "Emily Davis",
+          "matricNumber": "2024/010203",
+          "timeJoined": "15:45",
+          "status": "present"
+        },
+        {
+          "id": "7",
+          "name": "Chris Taylor",
+          "matricNumber": "2022/112233",
+          "timeJoined": "15:20",
+          "status": "present"
+        },
+        {
+          "id": "8",
+          "name": "Jessica Miller",
+          "matricNumber": "2023/445566",
+          "timeJoined": "14:57",
+          "status": "present"
+        },
+        {
+          "id": "9",
+          "name": "Daniel Anderson",
+          "matricNumber": "2021/778899",
+          "timeJoined": "14:59",
+          "status": "present"
+        },
+        {
+          "id": "10",
+          "name": "Amanda Thomas",
+          "matricNumber": "2022/334455",
+          "timeJoined": "14:56",
+          "status": "present"
+        }
+      ]
+    },
+    {
+      "id": "sess_008",
+      "courseCode": "CSC308",
+      "courseName": "Cybersecurity Fundamentals",
+      "date": "2025-02-19",
+      "timeStart": "09:00",
+      "timeEnd": "11:00",
+      "duration": 2,
+      "totalStudents": 11,
+      "presentStudents": 11,
+      "lateStudents": 0,
+      "sessionCode": "CSC308-1902",
+      "status": "ended",
+      "students": [
+        {
+          "id": "1",
+          "name": "John Doe",
+          "matricNumber": "2022/123456",
+          "timeJoined": "08:55",
+          "status": "present"
+        },
+        {
+          "id": "2",
+          "name": "Jane Smith",
+          "matricNumber": "2022/123457",
+          "timeJoined": "08:56",
+          "status": "present"
+        },
+        {
+          "id": "3",
+          "name": "Michael Brown",
+          "matricNumber": "2023/100201",
+          "timeJoined": "08:57",
+          "status": "present"
+        },
+        {
+          "id": "4",
+          "name": "Sarah Johnson",
+          "matricNumber": "2021/050403",
+          "timeJoined": "08:58",
+          "status": "present"
+        },
+        {
+          "id": "5",
+          "name": "David Wilson",
+          "matricNumber": "2022/090807",
+          "timeJoined": "08:59",
+          "status": "present"
+        },
+        {
+          "id": "6",
+          "name": "Emily Davis",
+          "matricNumber": "2024/010203",
+          "timeJoined": "08:54",
+          "status": "present"
+        },
+        {
+          "id": "7",
+          "name": "Chris Taylor",
+          "matricNumber": "2022/112233",
+          "timeJoined": "08:53",
+          "status": "present"
+        },
+        {
+          "id": "8",
+          "name": "Jessica Miller",
+          "matricNumber": "2023/445566",
+          "timeJoined": "08:52",
+          "status": "present"
+        },
+        {
+          "id": "9",
+          "name": "Daniel Anderson",
+          "matricNumber": "2021/778899",
+          "timeJoined": "08:51",
+          "status": "present"
+        },
+        {
+          "id": "10",
+          "name": "Amanda Thomas",
+          "matricNumber": "2022/334455",
+          "timeJoined": "08:50",
+          "status": "present"
+        },
+        {
+          "id": "11",
+          "name": "Brian Moore",
+          "matricNumber": "2024/223344",
+          "timeJoined": "08:49",
+          "status": "present"
+        }
+      ]
+    },
+    {
+      "id": "sess_009",
+      "courseCode": "CSC309",
+      "courseName": "Cloud Computing",
+      "date": "2025-02-20",
+      "timeStart": "12:00",
+      "timeEnd": "14:00",
+      "duration": 2,
+      "totalStudents": 11,
+      "presentStudents": 7,
+      "lateStudents": 2,
+      "absentStudents": 2,
+      "sessionCode": "CSC309-2002",
+      "status": "ended",
+      "students": [
+        {
+          "id": "1",
+          "name": "John Doe",
+          "matricNumber": "2022/123456",
+          "timeJoined": "11:55",
+          "status": "present"
+        },
+        {
+          "id": "2",
+          "name": "Jane Smith",
+          "matricNumber": "2022/123457",
+          "timeJoined": "12:30",
+          "status": "present"
+        },
+        {
+          "id": "3",
+          "name": "Michael Brown",
+          "matricNumber": "2023/100201",
+          "timeJoined": null,
+          "status": "absent"
+        },
+        {
+          "id": "4",
+          "name": "Sarah Johnson",
+          "matricNumber": "2021/050403",
+          "timeJoined": "12:15",
+          "status": "present"
+        },
+        {
+          "id": "5",
+          "name": "David Wilson",
+          "matricNumber": "2022/090807",
+          "timeJoined": null,
+          "status": "absent"
+        },
+        {
+          "id": "6",
+          "name": "Emily Davis",
+          "matricNumber": "2024/010203",
+          "timeJoined": "11:58",
+          "status": "present"
+        },
+        {
+          "id": "7",
+          "name": "Chris Taylor",
+          "matricNumber": "2022/112233",
+          "timeJoined": "11:57",
+          "status": "present"
+        },
+        {
+          "id": "8",
+          "name": "Jessica Miller",
+          "matricNumber": "2023/445566",
+          "timeJoined": "11:59",
+          "status": "present"
+        },
+        {
+          "id": "9",
+          "name": "Daniel Anderson",
+          "matricNumber": "2021/778899",
+          "timeJoined": "11:56",
+          "status": "present"
+        },
+        {
+          "id": "10",
+          "name": "Amanda Thomas",
+          "matricNumber": "2022/334455",
+          "timeJoined": "11:54",
+          "status": "present"
+        }
+      ]
+    },
+    {
+      "id": "sess_010",
+      "courseCode": "CSC310",
+      "courseName": "Data Structures and Algorithms",
+      "date": "2025-02-21",
+      "timeStart": "13:00",
+      "timeEnd": "15:00",
+      "duration": 2,
+      "totalStudents": 11,
+      "presentStudents": 8,
+      "lateStudents": 1,
+      "absentStudents": 2,
+      "sessionCode": "CSC310-2102",
+      "status": "ended",
+      "students": [
+        {
+          "id": "1",
+          "name": "John Doe",
+          "matricNumber": "2022/123456",
+          "timeJoined": "12:55",
+          "status": "present"
+        },
+        {
+          "id": "2",
+          "name": "Jane Smith",
+          "matricNumber": "2022/123457",
+          "timeJoined": "13:45",
+          "status": "present"
+        },
+        {
+          "id": "3",
+          "name": "Michael Brown",
+          "matricNumber": "2023/100201",
+          "timeJoined": "12:57",
+          "status": "present"
+        },
+        {
+          "id": "4",
+          "name": "Sarah Johnson",
+          "matricNumber": "2021/050403",
+          "timeJoined": null,
+          "status": "absent"
+        },
+        {
+          "id": "5",
+          "name": "David Wilson",
+          "matricNumber": "2022/090807",
+          "timeJoined": "12:59",
+          "status": "present"
+        },
+        {
+          "id": "6",
+          "name": "Emily Davis",
+          "matricNumber": "2024/010203",
+          "timeJoined": "12:58",
+          "status": "present"
+        },
+        {
+          "id": "7",
+          "name": "Chris Taylor",
+          "matricNumber": "2022/112233",
+          "timeJoined": null,
+          "status": "absent"
+        },
+        {
+          "id": "8",
+          "name": "Jessica Miller",
+          "matricNumber": "2023/445566",
+          "timeJoined": "12:56",
+          "status": "present"
+        },
+        {
+          "id": "9",
+          "name": "Daniel Anderson",
+          "matricNumber": "2021/778899",
+          "timeJoined": "12:54",
+          "status": "present"
+        },
+        {
+          "id": "10",
+          "name": "Amanda Thomas",
+          "matricNumber": "2022/334455",
+          "timeJoined": "12:53",
+          "status": "present"
+        },
+        {
+          "id": "11",
+          "name": "Brian Moore",
+          "matricNumber": "2024/223344",
+          "timeJoined": "12:52",
+          "status": "present"
+        }
+      ]
+    },
+    {
+      "id": "sess_1770984666826",
+      "courseName": "Engineering and Society",
+      "courseCode": "GST 401",
+      "date": "2026-02-13",
+      "startTime": "13:22",
+      "expectedStudents": 11,
+      "attendanceDuration": 60,
+      "timeEnd": "14:22",
+      "sessionCode": "39610327",
+      "duration": 1,
+      "totalStudents": 11,
+      "presentStudents": 0,
+      "lateStudents": 0,
+      "absentStudents": 11,
+      "status": "ended",
+      "students": []
+    },
+    {
+      "id": "sess_1770985566502",
+      "courseName": "Robotics & Graphics",
+      "courseCode": "CEE 402",
+      "date": "2026-02-13",
+      "startTime": "13:27",
+      "expectedStudents": 10,
+      "attendanceDuration": 60,
+      "timeStart": "13:27",
+      "timeEnd": "14:27",
+      "sessionCode": "27682808",
+      "duration": 1,
+      "totalStudents": 10,
+      "presentStudents": 2,
+      "lateStudents": 0,
+      "absentStudents": 8,
+      "status": "ended",
+      "students": [
+        {
+          "id": "1",
+          "name": "John Doe",
+          "matricNumber": "2022/123456",
+          "timeJoined": "13:52",
+          "status": "present"
+        },
+        {
+          "id": "3",
+          "name": "Michael Brown",
+          "matricNumber": "2023/100201",
+          "timeJoined": "14:02",
+          "status": "present"
+        }
+      ]
+    },
+    {
+      "id": "sess_1770987839660",
+      "courseName": "Engineering Mathematics",
+      "courseCode": "CEE403",
+      "date": "2026-02-13",
+      "startTime": "14:04",
+      "expectedStudents": 10,
+      "attendanceDuration": 60,
+      "timeStart": "14:04",
+      "timeEnd": "15:04",
+      "sessionCode": "92171232",
+      "duration": 1,
+      "totalStudents": 10,
+      "presentStudents": 2,
+      "lateStudents": 0,
+      "absentStudents": 8,
+      "status": "active",
+      "students": [
+        {
+          "id": "3",
+          "name": "Michael Brown",
+          "matricNumber": "2023/100201",
+          "timeJoined": "14:04",
+          "status": "present"
+        },
+        {
+          "id": "1",
+          "name": "John Doe",
+          "matricNumber": "2022/123456",
+          "timeJoined": "14:05",
+          "status": "present"
+        }
+      ]
+    }
+  ]
+}
