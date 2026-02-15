@@ -125,7 +125,7 @@ export default function HeroSection() {
 
           <div className=" w-full justify-center lg:justify-start pt-6 flex items-center">
             <Link
-              href={"/dashboard"}
+              href={"/attend"}
               className="px-5 py-3 rounded-md font-semibold bg-white text-indigo-600 border border-indigo-400 flex items-center gap-2 hover:bg-indigo-600/5 active:scale-95 transition-all"
               type="button"
             >
@@ -135,7 +135,7 @@ export default function HeroSection() {
                 color="blue"
                 strokeWidth={1.5}
               />
-              <span>Get Started</span>
+              <span>Attend Class</span>
             </Link>
           </div>
           {/* <div className="flex items-center gap-4 mt-6 max-md:justify-center">

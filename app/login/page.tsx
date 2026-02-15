@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Image from "next/image";
 
+import { useRouter } from "next/navigation";
+
 // Define the schema using Zod
 const loginSchema = z.object({
   email: z
@@ -13,7 +15,7 @@ const loginSchema = z.object({
     .email({ message: "Please enter a valid email address" }),
   password: z
     .string()
-    .min(6, { message: "Password must be at least 6 characters" })
+    .min(4, { message: "Password must be at least 4 characters" })
     .max(50, { message: "Password must be less than 50 characters" }),
   rememberMe: z.boolean().optional(),
 });
@@ -22,9 +24,11 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function LoginForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<LoginFormData>({
@@ -41,15 +45,23 @@ export default function LoginForm() {
     console.log("Form data:", data);
     await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay
 
-    // Here you would typically make an API call to your backend
-    // try {
-    //   const response = await loginUser(data);
-    //   console.log("Login successful:", response);
-    // } catch (error) {
-    //   console.error("Login failed:", error);
-    // }
-
-    reset(); // Reset form after submission
+    if (data.email === "staff-admin@gmail.com" && data.password === "!123@") {
+      router.push("/dashboard");
+    } else {
+      // Set error
+      setError("root", {
+        type: "manual",
+        message: "Invalid email or password",
+      });
+      setError("email", {
+        type: "manual",
+        message: "Invalid credentials",
+      });
+      setError("password", {
+        type: "manual",
+        message: "Invalid credentials",
+      });
+    }
   };
 
   const handleGoogleLogin = () => {
@@ -85,7 +97,14 @@ export default function LoginForm() {
               Enter Staff details
             </p>
             <div className="w-full h-px bg-gray-300/90"></div>
+            <div className="w-full h-px bg-gray-300/90"></div>
           </div>
+
+          {errors.root && (
+            <div className="w-full bg-red-100 text-red-600 p-3 rounded-lg mb-4 text-sm text-center">
+              {errors.root.message}
+            </div>
+          )}
 
           {/* Email Input */}
           <div className="w-full mb-1">
