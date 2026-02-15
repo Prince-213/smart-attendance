@@ -16,9 +16,9 @@ const DashboardHome = () => {
   );
   const [loading, setLoading] = useState(true);
 
-  const fetchActiveSession = useCallback(async () => {
+  const fetchActiveSession = useCallback(async (silent = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       const sessions = await getAllSessions();
       const active = sessions.find(
         (s: AttendanceSession) => s.status === "active",
@@ -27,12 +27,19 @@ const DashboardHome = () => {
     } catch (error) {
       console.error("Error fetching sessions:", error);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   }, []);
 
   useEffect(() => {
     fetchActiveSession();
+
+    // Set up realtime polling every 5 seconds
+    const interval = setInterval(() => {
+      fetchActiveSession(true);
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, [fetchActiveSession]);
 
   const handleEndSession = async (id: string) => {

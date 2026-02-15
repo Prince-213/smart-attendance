@@ -33,13 +33,13 @@ export function SiteHeader() {
             <span className=" text-sm">Attendance active</span>
           </div>
 
-          <div className="flex items-center space-x-2.5 border border-gray-200 rounded-full bg-gray-100/50 p-1 text-sm text-gray-800">
+          {/*   <div className="flex items-center space-x-2.5 border border-gray-200 rounded-full bg-gray-100/50 p-1 text-sm text-gray-800">
             <div className="flex items-center space-x-1 bg-white border border-gray-200 rounded-2xl px-3 py-1">
               <Users2 size={16} />
               <p>No. of completed classes</p>
             </div>
             <p className="pr-3 font-semibold">10 classes</p>
-          </div>
+          </div> */}
         </div>
       </div>
     </header>

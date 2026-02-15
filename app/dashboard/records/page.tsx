@@ -19,36 +19,41 @@ import {
   Search,
 } from "lucide-react";
 
-import { getAllStudents } from "@/lib/apis";
-import { Student } from "@/types";
+import { getAllStudents, getAllSessions } from "@/lib/apis";
+import { Student, AttendanceSession } from "@/types";
 
 const HistoryPage = () => {
-  const [session, setSession] = useState<Student[]>([]);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [sessions, setSessions] = useState<AttendanceSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    const fetchStudents = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const data = await getAllStudents();
-        setSession(data);
+        const [studentsData, sessionsData] = await Promise.all([
+          getAllStudents(),
+          getAllSessions(),
+        ]);
+        setStudents(studentsData);
+        setSessions(sessionsData);
       } catch (err) {
-        console.error("Error fetching students:", err);
-        setError("Failed to load students. Please try again later.");
+        console.error("Error fetching data:", err);
+        setError("Failed to load records. Please try again later.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchStudents();
+    fetchData();
   }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [timeRemaining, setTimeRemaining] = useState(1200); // 20 minutes in seconds
 
-  const filteredStudents = session.filter(
+  const filteredStudents = students.filter(
     (student) =>
       student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       student.matriculationNumber
@@ -84,14 +89,20 @@ const HistoryPage = () => {
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const getStatusColor = (attendance: number) => {
-    const score = (attendance / 10) * 100;
+  const calculateAttendancePercentage = (studentId: string) => {
+    if (sessions.length === 0) return 0;
+    const attendedCount = sessions.filter((sess) =>
+      sess.students.some((s) => s.id === studentId && s.status === "present"),
+    ).length;
+    return Math.round((attendedCount / sessions.length) * 100);
+  };
 
-    if (score >= 0 && score < 50) {
+  const getStatusColor = (percentage: number) => {
+    if (percentage < 50) {
       return "bg-red-400 text-red-800 border-red-200";
-    } else if (score >= 50 && score < 70) {
+    } else if (percentage >= 50 && percentage < 70) {
       return "bg-yellow-400 text-yellow-800 border-yellow-200";
-    } else if (score >= 70) {
+    } else {
       return "bg-green-400 text-green-800 border-green-200";
     }
   };
@@ -195,14 +206,14 @@ const HistoryPage = () => {
                     <td className="py-4 px-6">
                       <div className=" flex items-center gap-2">
                         <p className=" font-semibold text-sm">
-                          {`${(student.attendanceScore / 10) * 100}%`}
+                          {`${calculateAttendancePercentage(student.id)}%`}
                         </p>
-                        <div className=" w-[150px] h-4 rounded-full bg-gray-100">
+                        <div className=" w-[150px] h-4 rounded-full bg-gray-100 overflow-hidden">
                           <div
                             style={{
-                              width: `${(student.attendanceScore * 150) / 10}px`,
+                              width: `${calculateAttendancePercentage(student.id)}%`,
                             }}
-                            className={` h-4 flex items-center justify-center  rounded-full font-medium ${getStatusColor(student.attendanceScore)}`}
+                            className={` h-full flex items-center justify-center rounded-full font-medium transition-all duration-500 ${getStatusColor(calculateAttendancePercentage(student.id))}`}
                           ></div>
                         </div>
                       </div>

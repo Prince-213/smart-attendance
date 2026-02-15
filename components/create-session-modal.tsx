@@ -69,6 +69,26 @@ const CreateAttendanceModal: React.FC<Props> = ({ isOpen, onClose }) => {
       const sessionCode = generateSessionCode();
       const id = `sess_${Date.now()}`;
 
+      // Get geolocation
+      const getPosition = () => {
+        return new Promise<GeolocationPosition>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+      };
+
+      let latitude: number | null = null;
+      let longitude: number | null = null;
+
+      try {
+        const position = await getPosition();
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+      } catch (geoError) {
+        console.warn("Could not get location:", geoError);
+        // We could block creation if location is required,
+        // but for now let's just warn as per request to get it.
+      }
+
       // Calculate end time
       const [hours, minutes] = data.startTime.split(":").map(Number);
       const startTimeObj = new Date();
@@ -91,6 +111,8 @@ const CreateAttendanceModal: React.FC<Props> = ({ isOpen, onClose }) => {
         absentStudents: data.expectedStudents,
         status: "active",
         students: [],
+        latitude,
+        longitude,
       };
 
       const result = await createSession(newSession);

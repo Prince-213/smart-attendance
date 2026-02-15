@@ -24,14 +24,52 @@ import {
   Download,
   LogOut,
   TriangleAlert,
+  User2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AttendanceSession, SessionStudent, Student } from "@/types";
-import { getSessionById, submitAttendance, getAllStudents } from "@/lib/apis";
+import {
+  getSessionById,
+  submitAttendance,
+  getAllStudents,
+  updateSession,
+} from "@/lib/apis";
+import haversine from "haversine-distance";
+import { toast } from "sonner";
+import * as faceapi from "face-api.js";
+import { Button } from "./ui/button";
+
+const labels = ["CEE100201", "CEE123456", "CEE123457"];
+
+async function getLabeledFaceDescriptions() {
+  return Promise.all(
+    labels.map(async (label) => {
+      const descriptions = [];
+      for (let i = 1; i <= 2; i++) {
+        const img = await faceapi.fetchImage(`/labels/${label}/${i}.jpg`);
+        const detections = await faceapi
+          .detectSingleFace(img)
+          .withFaceLandmarks()
+          .withFaceDescriptor();
+        if (detections && detections.descriptor) {
+          descriptions.push(detections.descriptor);
+        }
+      }
+      return new faceapi.LabeledFaceDescriptors(label, descriptions);
+    }),
+  );
+}
 
 const AttendancePortal = ({ sessionCode }: { sessionCode: string }) => {
   const navigate = useRouter();
+  const [isCapturing, setIsCapturing] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const matchStartTime = useRef<number | null>(null);
+  const [detectionInfo, setDetectionInfo] = useState({
+    label: "",
+    confidence: 0,
+  });
 
   const [step, setStep] = useState<
     "select" | "verify" | "biometric" | "success"
@@ -51,8 +89,132 @@ const AttendancePortal = ({ sessionCode }: { sessionCode: string }) => {
   const [verificationStatus, setVerificationStatus] = useState<
     "idle" | "success" | "failed"
   >("idle");
-  const [timer, setTimer] = useState(0);
+  const [timer, setTimer] = useState<number | null>(null);
   const [showFaceGuide, setShowFaceGuide] = useState(false);
+  const [distanceToVenue, setDistanceToVenue] = useState<number | null>(null);
+
+  // Load models on mount
+  useEffect(() => {
+    async function loadModels() {
+      await Promise.all([
+        faceapi.nets.ssdMobilenetv1.loadFromUri("/models"),
+        faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
+        faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
+      ]);
+    }
+    loadModels();
+  }, []);
+
+  // Handle camera stream based on step
+  useEffect(() => {
+    let stream: MediaStream | null = null;
+    let isActive = true;
+
+    if (step === "biometric") {
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: false })
+        .then((s) => {
+          if (!isActive) {
+            s.getTracks().forEach((track) => track.stop());
+            return;
+          }
+          stream = s;
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+          }
+        })
+        .catch((err) => {
+          console.error("Camera access error:", err);
+          toast.error("Camera access required", {
+            description: "Please allow camera access to proceed.",
+          });
+        });
+    }
+
+    return () => {
+      isActive = false;
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [step]);
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout | undefined;
+    async function onPlay() {
+      const labeledFaceDescriptors = await getLabeledFaceDescriptions();
+      const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors);
+
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      const displaySize = { width: 600, height: 450 };
+      if (canvas) {
+        faceapi.matchDimensions(canvas, displaySize);
+      }
+
+      intervalId = setInterval(async () => {
+        let detections: faceapi.WithFaceDescriptor<
+          faceapi.WithFaceLandmarks<faceapi.WithFaceDetection<{}>>
+        >[] = [];
+        if (video) {
+          detections = await faceapi
+            .detectAllFaces(video)
+            .withFaceLandmarks()
+            .withFaceDescriptors();
+        }
+
+        const resizedDetections = faceapi.resizeResults(
+          detections,
+          displaySize,
+        );
+        if (canvas) {
+          const ctx = canvas.getContext("2d");
+          if (ctx) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }
+        }
+
+        const results = resizedDetections.map((d) =>
+          faceMatcher.findBestMatch(d.descriptor),
+        );
+        results.forEach((result, i) => {
+          const box = resizedDetections[i].detection.box;
+          const confidence = resizedDetections[i].detection.score;
+          const drawBox = new faceapi.draw.DrawBox(box, {
+            label: `${result.toString()} (${(confidence * 100).toFixed(2)}%)`,
+          });
+          if (canvas) {
+            drawBox.draw(canvas);
+          }
+
+          // Update detection info for the first detected face
+          if (i === 0) {
+            setDetectionInfo({
+              label: result.label,
+              confidence: confidence,
+            });
+
+            console.log(detections);
+          }
+        });
+
+        // If no faces detected, clear info
+        if (results.length === 0) {
+          setDetectionInfo({ label: "", confidence: 0 });
+        }
+      }, 100);
+    }
+
+    if (videoRef.current) {
+      videoRef.current.addEventListener("play", onPlay);
+    }
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.removeEventListener("play", onPlay);
+      }
+      clearInterval(intervalId);
+    };
+  }, [step]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,17 +229,74 @@ const AttendancePortal = ({ sessionCode }: { sessionCode: string }) => {
           setError("Session not found.");
           return;
         }
+        if (sessionData.status === "ended") {
+          setError("This session has ended.");
+          return;
+        }
         setSession(sessionData);
         setStudents(studentsData);
+
+        // Check proximity if session has location
+        if (sessionData.latitude && sessionData.longitude) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const start = {
+                latitude: sessionData.latitude as number,
+                longitude: sessionData.longitude as number,
+              };
+              const end = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+              };
+              const distance = haversine(start, end);
+
+              console.log("the distance is" + distance);
+
+              if (distance > 3000) {
+                toast.error("You are far from the lecture hall", {
+                  description:
+                    "Please go to the lecture hall to register attendance",
+                  duration: 5000,
+                });
+                setVerificationError(
+                  "Proximity check failed: You are far from the lecture hall. Please go to the lecture hall to register attendance",
+                );
+              }
+            },
+            (err) => {
+              console.error("Error getting location:", err);
+              toast.warning("Location access is required for attendance", {
+                description: "Please enable location check to proceed",
+              });
+            },
+          );
+        }
 
         // Calculate remaining time
         const now = new Date();
         const endTime = new Date(`${sessionData.date}T${sessionData.timeEnd}`);
-        const diff = Math.max(
-          0,
-          Math.floor((endTime.getTime() - now.getTime()) / 1000),
+
+        // Handle cross-day sessions: If end time is before start time, it means it ends the next day
+        const startTime = new Date(
+          `${sessionData.date}T${sessionData.timeStart}`,
         );
-        setTimer(diff);
+        if (endTime < startTime) {
+          endTime.setDate(endTime.getDate() + 1);
+        }
+
+        const diff = Math.floor((endTime.getTime() - now.getTime()) / 1000);
+        const remaining = Math.max(0, diff);
+
+        console.log("Session Data Loaded:", {
+          sessionCode,
+          status: sessionData.status,
+          now: now.toISOString(),
+          endTime: endTime.toISOString(),
+          diffSeconds: diff,
+          remainingSeconds: remaining,
+        });
+
+        setTimer(remaining);
       } catch (err) {
         console.error("Error fetching data:", err);
         setError("Failed to load session or student data.");
@@ -89,90 +308,57 @@ const AttendancePortal = ({ sessionCode }: { sessionCode: string }) => {
   }, [sessionCode]);
 
   useEffect(() => {
-    if (timer > 0) {
+    if (timer !== null && timer > 0) {
       const interval = setInterval(() => {
-        setTimer((prev) => (prev > 0 ? prev - 1 : 0));
+        setTimer((prev) => (prev !== null && prev > 0 ? prev - 1 : 0));
       }, 1000);
       return () => clearInterval(interval);
     }
   }, [timer]);
 
   useEffect(() => {
-    if (timer === 0 && step !== "success" && !loading && session) {
-      navigate.push("/attend");
+    // Only redirect if timer is explicitly 0
+    if (timer === 0 && !loading && session) {
+      const handleExpiry = async () => {
+        if (session.status !== "ended") {
+          try {
+            console.log("Timer hit 0. Ending session...");
+            await updateSession(session.id, { status: "ended" });
+            setSession((prev) => (prev ? { ...prev, status: "ended" } : null));
+            setError("This session has expired.");
+          } catch (err) {
+            console.error("Failed to end session:", err);
+          }
+        } else {
+          setError("This session has ended.");
+        }
+      };
+      handleExpiry();
     }
-  }, [timer, step, navigate, loading, session]);
-
-  const drawFaceOutline = (ctx: CanvasRenderingContext2D) => {
-    const canvas = canvasRef.current!;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.beginPath();
-    ctx.ellipse(
-      canvas.width / 2,
-      canvas.height / 2 - 20,
-      80,
-      100,
-      0,
-      0,
-      Math.PI * 2,
-    );
-    ctx.strokeStyle =
-      verificationStatus === "idle"
-        ? "#3b82f6"
-        : verificationStatus === "success"
-          ? "#10b981"
-          : "#ef4444";
-    ctx.lineWidth = 3;
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.arc(canvas.width / 2 - 30, canvas.height / 2 - 40, 10, 0, Math.PI * 2);
-    ctx.fillStyle =
-      verificationStatus === "idle"
-        ? "#3b82f6"
-        : verificationStatus === "success"
-          ? "#10b981"
-          : "#ef4444";
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.arc(canvas.width / 2 + 30, canvas.height / 2 - 40, 10, 0, Math.PI * 2);
-    ctx.fillStyle =
-      verificationStatus === "idle"
-        ? "#3b82f6"
-        : verificationStatus === "success"
-          ? "#10b981"
-          : "#ef4444";
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.arc(canvas.width / 2, canvas.height / 2 + 20, 40, 0.2, 0.8 * Math.PI);
-    ctx.strokeStyle =
-      verificationStatus === "idle"
-        ? "#3b82f6"
-        : verificationStatus === "success"
-          ? "#10b981"
-          : "#ef4444";
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    if (verificationStatus !== "idle") {
-      ctx.beginPath();
-      ctx.arc(canvas.width / 2, canvas.height / 2, 5, 0, Math.PI * 2);
-      ctx.fillStyle = verificationStatus === "success" ? "#10b981" : "#ef4444";
-      ctx.fill();
-    }
-  };
+  }, [timer, loading, session]);
 
   useEffect(() => {
-    if (step === "biometric" && canvasRef.current) {
-      const ctx = canvasRef.current.getContext("2d");
-      if (ctx) {
-        drawFaceOutline(ctx);
-      }
-    }
-  }, [step, verificationStatus]);
+    if (!session?.latitude || !session?.longitude) return;
+
+    const watchId = navigator.geolocation.watchPosition(
+      (position) => {
+        const start = {
+          latitude: session.latitude!,
+          longitude: session.longitude!,
+        };
+        const end = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        const dist = haversine(start, end);
+        setDistanceToVenue(dist);
+      },
+      (err) => console.error("Location watch error:", err),
+      { enableHighAccuracy: true },
+    );
+
+    return () => navigator.geolocation.clearWatch(watchId);
+  }, [session]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -205,43 +391,93 @@ const AttendancePortal = ({ sessionCode }: { sessionCode: string }) => {
     }
   };
 
+  const processAttendanceSubmission = async (success: boolean) => {
+    // Final proximity check before submission
+
+    console.log("processing attendance");
+
+    if (session) {
+      setIsSubmitting(true);
+      console.log("submitting attendance");
+      try {
+        const studentInfo = students.find((s) => s.id === selectedStudent);
+        if (!studentInfo) throw new Error("Student data missing");
+
+        const now = new Date();
+        const timeJoined = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
+
+        const isLate = false; // Logic removed as per request
+
+        const attendanceRecord: SessionStudent = {
+          id: studentInfo.id,
+          name: studentInfo.name,
+          matricNumber: studentInfo.matriculationNumber,
+          timeJoined,
+          status: "present",
+        };
+
+        await submitAttendance(session.id, attendanceRecord);
+        setStep("success");
+      } catch (error) {
+        console.error("Failed to submit attendance:", error);
+        alert("Submission failed. Please try again.");
+        setVerificationStatus("failed");
+        setIsSubmitting(false);
+      }
+    }
+  };
+
   const simulateFaceVerification = async (success: boolean) => {
     setIsVerifying(true);
     setVerificationStatus("idle");
 
-    setTimeout(async () => {
-      setIsVerifying(false);
-      setVerificationStatus(success ? "success" : "failed");
-
-      if (success && session) {
-        setIsSubmitting(true);
-        try {
-          const studentInfo = students.find((s) => s.id === selectedStudent);
-          if (!studentInfo) throw new Error("Student data missing");
-
-          const now = new Date();
-          const timeJoined = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
-
-          const isLate = false; // Logic removed as per request
-
-          const attendanceRecord: SessionStudent = {
-            id: studentInfo.id,
-            name: studentInfo.name,
-            matricNumber: studentInfo.matriculationNumber,
-            timeJoined,
-            status: "present",
-          };
-
-          await submitAttendance(session.id, attendanceRecord);
-          setStep("success");
-        } catch (error) {
-          console.error("Failed to submit attendance:", error);
-          alert("Submission failed. Please try again.");
-          setVerificationStatus("failed");
-        }
-      }
+    setTimeout(() => {
+      processAttendanceSubmission(success);
     }, 2000);
   };
+
+  useEffect(() => {
+    if (
+      step !== "biometric" ||
+      isVerifying ||
+      verificationStatus === "success"
+    ) {
+      matchStartTime.current = null;
+      return;
+    }
+
+    const student = students.find((s) => s.id === selectedStudent);
+    if (!student) return;
+
+    // Use matriculationNumber as the label to match
+    const targetLabel = student.matriculationNumber;
+
+    // Check if detected face matches the student's matric number
+    // We also check confidence to ensure it's a good match
+    if (detectionInfo.label === targetLabel && detectionInfo.confidence > 0.4) {
+      if (!matchStartTime.current) {
+        matchStartTime.current = Date.now();
+      } else {
+        const elapsed = Date.now() - matchStartTime.current;
+        if (elapsed > 2000) {
+          // 3 seconds passed with continuous match
+          setIsVerifying(true);
+          processAttendanceSubmission(true);
+          matchStartTime.current = null;
+        }
+      }
+    } else {
+      // Reset timer if face mismatch or no face
+      matchStartTime.current = null;
+    }
+  }, [
+    detectionInfo,
+    step,
+    selectedStudent,
+    isVerifying,
+    verificationStatus,
+    students,
+  ]);
   const getSelectedStudent = () => {
     const student = students.find((s) => s.id === selectedStudent);
     return (
@@ -346,10 +582,25 @@ const AttendancePortal = ({ sessionCode }: { sessionCode: string }) => {
 
             <div className="flex items-center space-x-4">
               <div className="hidden md:flex items-center space-x-6">
+                {/* Distance Indicator */}
+                {distanceToVenue !== null && (
+                  <div
+                    className={`flex items-center space-x-2 px-3 py-1 rounded-full ${
+                      distanceToVenue <= 30
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700 border border-red-200"
+                    }`}
+                  >
+                    <MapPin className="h-4 w-4" />
+                    <span className="font-semibold text-sm">
+                      {Math.round(distanceToVenue)}m away
+                    </span>
+                  </div>
+                )}
                 <div className="text-right">
                   <div className="text-sm text-gray-600">Time Remaining</div>
                   <div className="text-lg font-bold text-red-600">
-                    {formatTime(timer)}
+                    {formatTime(timer ?? 0)}
                   </div>
                 </div>
                 <button
@@ -489,9 +740,9 @@ const AttendancePortal = ({ sessionCode }: { sessionCode: string }) => {
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600">Time Remaining</span>
                     <span
-                      className={`font-bold ${timer < 60 ? "text-red-600" : "text-green-600"}`}
+                      className={`font-bold ${(timer ?? 0) < 60 ? "text-red-600" : "text-green-600"}`}
                     >
-                      {formatTime(timer)}
+                      {formatTime(timer ?? 0)}
                     </span>
                   </div>
                 </div>
@@ -650,7 +901,7 @@ const AttendancePortal = ({ sessionCode }: { sessionCode: string }) => {
 
                 {/* Step 3: Face Verification */}
                 {step === "biometric" && (
-                  <div className="p-8">
+                  <div className="p-8 relative">
                     <div className="text-center mb-8">
                       <div className="p-3 bg-purple-100 rounded-full inline-block mb-4">
                         <Camera className="h-6 w-6 text-purple-600" />
@@ -663,53 +914,45 @@ const AttendancePortal = ({ sessionCode }: { sessionCode: string }) => {
                       </p>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-8 mb-8">
+                    <div className=" ">
                       {/* Camera Preview */}
-                      <div className="bg-gray-900 rounded-xl overflow-hidden">
-                        <div className="aspect-video relative">
-                          <canvas
-                            ref={canvasRef}
-                            width={400}
-                            height={300}
-                            className="w-full h-full"
-                          />
-                          {verificationStatus === "success" && (
-                            <div className="absolute inset-0 bg-green-500/20 flex items-center justify-center">
-                              <CheckCircle className="h-16 w-16 text-green-500" />
-                            </div>
-                          )}
-                          {verificationStatus === "failed" && (
-                            <div className="absolute inset-0 bg-red-500/20 flex items-center justify-center">
-                              <XCircle className="h-16 w-16 text-red-500" />
-                            </div>
-                          )}
-                        </div>
-                        <div className="p-4 bg-gray-800 flex justify-between items-center">
-                          <div className="flex items-center space-x-2">
-                            <div
-                              className={`w-2 h-2 rounded-full ${
-                                verificationStatus === "idle"
-                                  ? "bg-yellow-500 animate-pulse"
-                                  : verificationStatus === "success"
-                                    ? "bg-green-500"
-                                    : "bg-red-500"
-                              }`}
-                            />
-                            <span className="text-sm text-white">
-                              {verificationStatus === "idle"
-                                ? "Ready for verification"
-                                : verificationStatus === "success"
-                                  ? "Verified"
-                                  : "Verification failed"}
-                            </span>
-                          </div>
-                          <button
-                            onClick={() => setShowFaceGuide(!showFaceGuide)}
-                            className="text-sm text-blue-400 hover:text-blue-300"
-                          >
-                            {showFaceGuide ? "Hide Guide" : "Show Guide"}
-                          </button>
-                        </div>
+
+                      <div
+                        style={{
+                          position: "relative",
+                          width: 600,
+                          height: 450,
+                          zIndex: 99999999,
+                        }}
+                      >
+                        <h1
+                          style={{
+                            position: "absolute",
+                            zIndex: 2,
+                            color: "red",
+                            background: "rgba(255,255,255,0.7)",
+                            padding: "8px",
+                          }}
+                        >
+                          {detectionInfo.label
+                            ? `Label: ${detectionInfo.label}, Confidence: ${(
+                                detectionInfo.confidence * 100
+                              ).toFixed(2)}%`
+                            : "No face detected"}
+                        </h1>
+                        <video
+                          ref={videoRef}
+                          width="600"
+                          height="450"
+                          autoPlay
+                          style={{ position: "absolute" }}
+                        />
+                        <canvas
+                          ref={canvasRef}
+                          width="600"
+                          height="450"
+                          style={{ position: "absolute" }}
+                        />
                       </div>
 
                       {/* Instructions & Controls */}
@@ -849,14 +1092,6 @@ const AttendancePortal = ({ sessionCode }: { sessionCode: string }) => {
                     </div>
 
                     <div className="space-y-4">
-                      <button
-                        onClick={handleExportProof}
-                        className="w-full max-w-md mx-auto py-3 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all font-medium flex items-center justify-center"
-                      >
-                        <Download className="h-5 w-5 mr-2" />
-                        Download Attendance Proof
-                      </button>
-
                       <button
                         onClick={handleLeaveSession}
                         className="w-full max-w-md mx-auto py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium"

@@ -191,10 +191,10 @@ const OngoingAttendance: React.FC<Props> = ({ session, onEnd, onRefresh }) => {
               </div>
               <button
                 onClick={() => setShowQRCode(!showQRCode)}
-                className="p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors shadow-lg hover:shadow-xl"
+                className="p-1 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors shadow-lg hover:shadow-xl"
                 title="Show QR Code"
               >
-                <QrCode className="h-8 w-8" />
+                <QrCode className="h-32 w-32" />
               </button>
             </div>
           </div>

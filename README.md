@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Smart Attendance System
 
-## Getting Started
+A modern, secure, and efficient attendance management system built with Next.js, featuring biometric verification and geolocation tracking.
 
-First, run the development server:
+## 🚀 Features
+
+- **Biometric Verification**: Facial recognition integration using `face-api.js` to ensure authentic attendance.
+- **Geolocation Tracking**: Validates that students are physically present in the lecture hall using `haversine-distance`.
+- **Real-time Dashboard**: Live updates of active sessions, attendance stats, and more.
+- **Admin Management**: Comprehensive admin panel to manage students, courses, and sessions.
+- **Secure Attendance Portal**:
+  - Time-limited sessions with automatic expiry.
+  - Strict access control for ended sessions.
+  - Step-by-step verification flow.
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Next.js 15](https://nextjs.org/) (React 19)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS, Lucide React (Icons)
+- **State Management & UI**: Radix UI, Sonner (Toasts)
+- **Biometrics**: face-api.js
+- **Backend/Mock DB**: JSON Server (for development)
+
+## 📦 Installation
+
+1.  **Clone the repository**:
+
+    ```bash
+    git clone https://github.com/yourusername/smart-attendance.git
+    cd smart-attendance
+    ```
+
+2.  **Install dependencies**:
+
+    ```bash
+    pnpm install
+    # or
+    npm install
+    ```
+
+3.  **Download Models**:
+    Ensure you have the `face-api.js` models in the `public/models` directory.
+
+## 🚦 Getting Started
+
+Run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This command concurrently starts:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- The Next.js frontend at `http://localhost:3000`
+- The JSON Server backend at `http://localhost:4000`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📂 Project Structure
 
-## Learn More
+- `app/`: Next.js App Router pages and layouts.
+- `components/`: Reusable UI components (Attendance Portal, Tables, Forms).
+- `lib/`: Utility functions and API helpers.
+- `public/`: Static assets (images, models).
+- `types/`: TypeScript definitions.
+- `db/`: Database file (`db.json`) for JSON Server.
 
-To learn more about Next.js, take a look at the following resources:
+## 📝 Usage
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1.  **Admin**: Log in to create sessions and manage students.
+2.  **Lecturer**: Create a session and share the session code.
+3.  **Student**:
+    - Enter the session code.
+    - Select your name.
+    - Verify your identity (Matrix Number + Face).
+    - Attendance is recorded automatically.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📄 License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License.

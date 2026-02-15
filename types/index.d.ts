@@ -73,4 +73,6 @@ export interface AttendanceSession {
   students: SessionStudent[];
   sessionCode: string;
   status: "active" | "ended";
+  latitude?: number | null;
+  longitude?: number | null;
 }
